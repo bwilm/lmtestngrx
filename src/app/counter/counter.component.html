@@ -1,1 +1,1 @@
-<h3 [ngClass]="counterDisplay < 0 ? 'negative' : 'positive'">Counter is : {{counterDisplay}} </h3>
+<h3 [ngClass]="((counterDisplay | async) ?? 0) < 0 ? 'negative' : 'positive'">Counter is : {{counterDisplay | async}} </h3>

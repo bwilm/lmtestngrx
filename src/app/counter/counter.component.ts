@@ -1,27 +1,25 @@
-import { NgClass, NgStyle } from '@angular/common';
+import { CommonModule, NgClass, NgStyle } from '@angular/common';
 import { Component, OnDestroy, OnInit} from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Subscription, map } from 'rxjs';
+import { Observable, Subscription, map} from 'rxjs';
 
 
 @Component({
   selector: 'app-counter',
   standalone: true,
-  imports: [NgClass],
+  imports: [NgClass,CommonModule],
   templateUrl: './counter.component.html',
   styleUrl: './counter.component.css'
 })
-export class CounterComponent implements OnInit, OnDestroy {
+export class CounterComponent implements OnInit {
 
-  counterDisplay: number = 0;
+  counterDisplay!: Observable<number>;
 
-  private countSubscription: Subscription | null = null;
+
 
   ngOnInit():void {
 
-    this.countSubscription = this.store.select('counter').subscribe((data) =>{
-      this.counterDisplay = data.counter;
-    })
+    this.counterDisplay = this.store.select('counter').pipe(map((data)=> data.counter));
   
   }
 
@@ -29,9 +27,9 @@ export class CounterComponent implements OnInit, OnDestroy {
 
   }
 
-  ngOnDestroy() {
-      if(this.countSubscription){
-        this.countSubscription.unsubscribe();
-      };
-  }
+  // ngOnDestroy() {
+  //     if(this.countSubscription){
+  //       this.countSubscription.unsubscribe();
+  //     };
+  // }
 }
